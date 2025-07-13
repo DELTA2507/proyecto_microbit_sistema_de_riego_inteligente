@@ -66,13 +66,16 @@ function i2c_stop () {
     pins.digitalWritePin(SDA_PIN, 1)
     basic.pause(1)
 }
+let servoSprinklerAngle = 0
 let humedad = 0
 let bit = 0
 let SCL_PIN = 0
 let SDA_PIN = 0
-let low = 0
-let high = 0
 let data = 0
+let high = 0
+let low = 0
+let servoSprinklerDirection = 1
+let servoSprinklerStep = 2
 SDA_PIN = DigitalPin.P2
 SCL_PIN = DigitalPin.P1
 let CHIRP_ADDR = 32
@@ -86,7 +89,7 @@ basic.pause(9000)
 basic.forever(function () {
     humedad = leer_chirp_humedad()
     makerbit.clearLcd1602()
-    if (humedad == -1) {
+    if (humedad <= -1) {
         makerbit.clearLcd1602()
         makerbit.showStringOnLcd1602("Examinando nivel", makerbit.position1602(LcdPosition1602.Pos1), 20)
         makerbit.showStringOnLcd1602("de humedad", makerbit.position1602(LcdPosition1602.Pos17), 20)
@@ -186,4 +189,21 @@ basic.forever(function () {
         }
     }
     basic.pause(2000)
+})
+basic.forever(function () {
+    if (humedad < 300 && humedad > -1) {
+        servoSprinklerAngle += servoSprinklerStep * servoSprinklerDirection
+        pins.servoWritePin(AnalogPin.P3, servoSprinklerAngle)
+        pins.servoWritePin(AnalogPin.P4, servoSprinklerAngle)
+        if (servoSprinklerAngle >= 180) {
+            servoSprinklerDirection = -1
+        }
+        if (servoSprinklerAngle <= 0) {
+            servoSprinklerDirection = 1
+        }
+        basic.pause(30)
+    } else {
+        pins.servoWritePin(AnalogPin.P3, 0)
+        pins.servoWritePin(AnalogPin.P4, 0)
+    }
 })
