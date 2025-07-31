@@ -3,11 +3,12 @@ function mostrarMensajeLCD (sensorValor: number) {
     if (sensorValor >= 700) {
         if (contador_errores > 5) {
             music.stopAllSounds()
-            music.play(music.createSoundExpression(WaveShape.Triangle, 2735, 2691, 44, 26, 1000, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.LoopingInBackground)
+            music.play(music.createSoundExpression(WaveShape.Triangle, 2735, 2691, 102, 98, 500, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.LoopingInBackground)
             makerbit.showStringOnLcd1602("Error sensor!", makerbit.position1602(LcdPosition1602.Pos1), 15)
             makerbit.showStringOnLcd1602("Revisar conexion", makerbit.position1602(LcdPosition1602.Pos17), 20)
         } else {
             music.stopAllSounds()
+            music.play(music.createSoundExpression(WaveShape.Triangle, 2735, 2691, 102, 98, 500, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.LoopingInBackground)
             makerbit.showStringOnLcd1602("Nivel de agua:", makerbit.position1602(LcdPosition1602.Pos1), 20)
             makerbit.showStringOnLcd1602("insuficiente", makerbit.position1602(LcdPosition1602.Pos17), 14)
             basic.pause(1500)
