@@ -1,22 +1,15 @@
 function mostrarMensajeLCD (sensorValor: number) {
     makerbit.clearLcd1602()
     if (sensorValor >= 700) {
-        if (contador_errores > 5) {
-            music.stopAllSounds()
-            music.play(music.createSoundExpression(WaveShape.Triangle, 2735, 2691, 102, 98, 500, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.LoopingInBackground)
-            makerbit.showStringOnLcd1602("Error sensor!", makerbit.position1602(LcdPosition1602.Pos1), 15)
-            makerbit.showStringOnLcd1602("Revisar conexion", makerbit.position1602(LcdPosition1602.Pos17), 20)
-        } else {
-            music.stopAllSounds()
-            music.play(music.createSoundExpression(WaveShape.Triangle, 2735, 2691, 102, 98, 500, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.LoopingInBackground)
-            makerbit.showStringOnLcd1602("Nivel de agua:", makerbit.position1602(LcdPosition1602.Pos1), 20)
-            makerbit.showStringOnLcd1602("insuficiente", makerbit.position1602(LcdPosition1602.Pos17), 14)
-            basic.pause(1500)
-            makerbit.clearLcd1602()
-            makerbit.showStringOnLcd1602("Necesito agua!", makerbit.position1602(LcdPosition1602.Pos1), 20)
-            makerbit.showStringOnLcd1602(":(", makerbit.position1602(LcdPosition1602.Pos17), 25)
-            basic.pause(1500)
-        }
+        music.stopAllSounds()
+        music.play(music.createSoundExpression(WaveShape.Triangle, 2735, 2691, 102, 98, 500, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.LoopingInBackground)
+        makerbit.showStringOnLcd1602("Nivel de agua:", makerbit.position1602(LcdPosition1602.Pos1), 20)
+        makerbit.showStringOnLcd1602("insuficiente", makerbit.position1602(LcdPosition1602.Pos17), 14)
+        basic.pause(1500)
+        makerbit.clearLcd1602()
+        makerbit.showStringOnLcd1602("Necesito agua!", makerbit.position1602(LcdPosition1602.Pos1), 20)
+        makerbit.showStringOnLcd1602(":(", makerbit.position1602(LcdPosition1602.Pos17), 25)
+        basic.pause(1500)
     } else {
         music.stopAllSounds()
         makerbit.showStringOnLcd1602("Nivel de agua:", makerbit.position1602(LcdPosition1602.Pos1), 20)
@@ -41,7 +34,6 @@ function inicializar_dispositivos () {
     basic.pause(1000)
 }
 let servoSprinklerAngle = 0
-let contador_errores = 0
 let sensorValor = 0
 music.setVolume(100)
 let servoSprinklerDirection = 1
@@ -53,11 +45,6 @@ basic.forever(function () {
 })
 basic.forever(function () {
     sensorValor = pins.analogReadPin(AnalogPin.P3)
-    if (sensorValor >= 700) {
-        contador_errores += 1
-    } else {
-        contador_errores = 0
-    }
     mostrarMensajeLCD(sensorValor)
     basic.pause(1000)
     if (sensorValor < 700) {
